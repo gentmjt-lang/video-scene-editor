@@ -61,6 +61,70 @@ Full auto-edit workflow: detect scenes, filter, and merge.
 
 **Returns:** Object with scenes detected, clips created, and final merged file
 
+### findBestThumbnailFrame
+
+Intelligently find the best frame for video thumbnail based on brightness, scene changes, and avoiding black/white frames.
+
+**Parameters:**
+
+- `videoPath` (string): Path to the video file
+- `candidates` (number): Number of candidate frames to analyze (default: 10)
+
+**Returns:** Timestamp in seconds of the best frame
+
+### generateThumbnail
+
+Generate a thumbnail image from a specific time or auto-selected best frame.
+
+**Parameters:**
+
+- `videoPath` (string): Path to the video file
+- `outputFile` (string): Output image path
+- `timestamp` (number): Time in seconds (null for auto-selection)
+- `width` (number): Output width in pixels (default: 1280)
+- `quality` (number): JPEG quality 1-31 (default: 2)
+
+**Returns:** Path to generated thumbnail
+
+### generateStoryboard
+
+Create a grid storyboard image (3x3) showing key moments from the video.
+
+**Parameters:**
+
+- `videoPath` (string): Path to the video file
+- `outputFile` (string): Output image path
+- `rows` (number): Number of rows (default: 3)
+- `cols` (number): Number of columns (default: 3)
+
+**Returns:** Path to generated storyboard
+
+### generateGIFPreview
+
+Generate an animated GIF preview of a video segment.
+
+**Parameters:**
+
+- `videoPath` (string): Path to the video file
+- `outputFile` (string): Output GIF path
+- `startTime` (number): Start time in seconds (null for middle)
+- `duration` (number): GIF duration in seconds (default: 3)
+- `width` (number): GIF width (default: 480)
+- `fps` (number): Frames per second (default: 10)
+
+**Returns:** Path to generated GIF
+
+### generateAllThumbnails
+
+Batch generate all thumbnail types: HD covers, storyboards, GIFs, and timeline images.
+
+**Parameters:**
+
+- `videoPath` (string): Path to the video file
+- `outputDir` (string): Output directory (default: "thumbnails")
+
+**Returns:** Object with paths to all generated files
+
 ## Requirements
 
 - FFmpeg installed and in PATH
@@ -80,6 +144,21 @@ node index.js split myvideo.mp4 scenes 0.3
 
 # Merge with filtering
 node index.js merge myvideo.mp4 2.0 output.mp4 0.3
+
+# Generate all thumbnails
+node index.js thumbnail myvideo.mp4 all ./thumbnails
+
+# Find best thumbnail frame
+node index.js thumbnail myvideo.mp4 best
+
+# Generate single thumbnail at specific time
+node index.js thumbnail myvideo.mp4 single 10.5 thumb.jpg
+
+# Generate storyboard
+node index.js thumbnail myvideo.mp4 storyboard
+
+# Generate GIF preview
+node index.js thumbnail myvideo.mp4 gif 15 preview.gif
 ```
 
 ## Installation
