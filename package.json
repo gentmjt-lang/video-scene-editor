@@ -1,0 +1,33 @@
+{
+  "name": "opencode-video-scene-editor",
+  "version": "1.0.0",
+  "description": "Auto-detect scene changes in videos and edit intelligently",
+  "main": "index.js",
+  "bin": {
+    "scene-editor": "./index.js"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "opencode",
+    "skill",
+    "video",
+    "ffmpeg",
+    "scene-detection",
+    "video-editing"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/video-scene-editor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/video-scene-editor/issues"
+  },
+  "homepage": "https://github.com/username/video-scene-editor#readme"
+}

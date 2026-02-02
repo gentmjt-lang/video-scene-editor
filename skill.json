@@ -1,0 +1,107 @@
+{
+  "name": "video-scene-editor",
+  "version": "1.0.0",
+  "description": "Auto-detect scene changes in videos and split/merge clips intelligently",
+  "author": "user",
+  "license": "MIT",
+  "keywords": ["video", "ffmpeg", "scene-detection", "editing", "clip"],
+  "entry": "index.js",
+  "capabilities": {
+    "detectScenes": {
+      "description": "Detect scene changes in a video file",
+      "parameters": {
+        "videoPath": {
+          "type": "string",
+          "description": "Path to the video file",
+          "required": true
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Scene detection threshold (0.1-0.5, default 0.3)",
+          "default": 0.3
+        }
+      },
+      "returns": {
+        "type": "array",
+        "description": "Array of scene change timestamps in seconds"
+      }
+    },
+    "splitByScenes": {
+      "description": "Split video into separate clips based on detected scenes",
+      "parameters": {
+        "videoPath": {
+          "type": "string",
+          "description": "Path to the video file",
+          "required": true
+        },
+        "outputDir": {
+          "type": "string",
+          "description": "Output directory for scene clips",
+          "default": "scenes"
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Scene detection threshold",
+          "default": 0.3
+        }
+      },
+      "returns": {
+        "type": "array",
+        "description": "Array of output file paths"
+      }
+    },
+    "mergeScenes": {
+      "description": "Merge video scenes with filtering for minimum duration",
+      "parameters": {
+        "videoPath": {
+          "type": "string",
+          "description": "Path to the video file",
+          "required": true
+        },
+        "minDuration": {
+          "type": "number",
+          "description": "Minimum scene duration to keep (seconds)",
+          "default": 2.0
+        },
+        "outputFile": {
+          "type": "string",
+          "description": "Output filename",
+          "default": "merged_scenes.mp4"
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Scene detection threshold",
+          "default": 0.3
+        }
+      },
+      "returns": {
+        "type": "string",
+        "description": "Path to merged output file"
+      }
+    },
+    "autoEdit": {
+      "description": "Full auto-edit workflow: detect scenes, filter, and merge",
+      "parameters": {
+        "videoPath": {
+          "type": "string",
+          "description": "Path to the video file",
+          "required": true
+        },
+        "minDuration": {
+          "type": "number",
+          "description": "Minimum scene duration to keep",
+          "default": 3.0
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Scene detection threshold",
+          "default": 0.3
+        }
+      },
+      "returns": {
+        "type": "object",
+        "description": "Result with scenes detected, clips created, and final merged file"
+      }
+    }
+  }
+}
