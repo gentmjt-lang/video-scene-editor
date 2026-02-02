@@ -238,12 +238,16 @@ async function main() {
       "  node index.js merge <videoPath> [minDuration] [outputFile] [threshold]",
     );
     console.log("  node index.js auto <videoPath> [minDuration] [threshold]");
+    console.log("  node index.js thumbnail <videoPath> <subCommand> [args...]");
     console.log("");
     console.log("Examples:");
     console.log("  node index.js detect video.mp4 0.3");
     console.log("  node index.js split video.mp4 scenes 0.3");
     console.log("  node index.js merge video.mp4 2.0 merged.mp4 0.3");
     console.log("  node index.js auto video.mp4 3.0 0.3");
+    console.log("  node index.js thumbnail video.mp4 all ./covers");
+    console.log("  node index.js thumbnail video.mp4 best");
+    console.log("  node index.js thumbnail video.mp4 gif 10 preview.gif");
     process.exit(0);
   }
 
@@ -292,6 +296,80 @@ async function main() {
         const threshold = parseFloat(args[3]) || 0.3;
         const result = autoEdit(videoPath, minDuration, threshold);
         console.log(JSON.stringify(result, null, 2));
+        break;
+      }
+
+      case "thumbnail": {
+        // Import thumbnail generator
+        const thumbnailGen = require("./thumbnail_generator");
+        const subCommand = args[2] || "all";
+        const outputArg = args[3];
+
+        switch (subCommand) {
+          case "best": {
+            const time = thumbnailGen.findBestThumbnailFrame(videoPath);
+            console.log(JSON.stringify({ bestFrame: time }, null, 2));
+            break;
+          }
+          case "single": {
+            const time = args[3] ? parseFloat(args[3]) : null;
+            const output =
+              args[4] ||
+              `thumb_${require("path").basename(videoPath, ".mp4")}.jpg`;
+            thumbnailGen.generateThumbnail(videoPath, output, time);
+            console.log(JSON.stringify({ thumbnail: output }, null, 2));
+            break;
+          }
+          case "storyboard": {
+            const output =
+              outputArg ||
+              `storyboard_${require("path").basename(videoPath, ".mp4")}.jpg`;
+            thumbnailGen.generateStoryboard(videoPath, output);
+            console.log(JSON.stringify({ storyboard: output }, null, 2));
+            break;
+          }
+          case "timeline": {
+            const output =
+              outputArg ||
+              `timeline_${require("path").basename(videoPath, ".mp4")}.jpg`;
+            thumbnailGen.generateTimestampedStoryboard(videoPath, output);
+            console.log(JSON.stringify({ timeline: output }, null, 2));
+            break;
+          }
+          case "gif": {
+            const start = outputArg ? parseFloat(outputArg) : null;
+            const output =
+              args[4] ||
+              `preview_${require("path").basename(videoPath, ".mp4")}.gif`;
+            thumbnailGen.generateGIFPreview(videoPath, output, start);
+            console.log(JSON.stringify({ gif: output }, null, 2));
+            break;
+          }
+          case "all": {
+            const outputDir = outputArg || "thumbnails";
+            const result = thumbnailGen.generateAllThumbnails(
+              videoPath,
+              outputDir,
+            );
+            console.log(JSON.stringify(result, null, 2));
+            break;
+          }
+          default: {
+            console.log("Thumbnail sub-commands:");
+            console.log("  best     - Find best frame time");
+            console.log(
+              "  single   - Generate single thumbnail [time] [output]",
+            );
+            console.log("  storyboard - Generate storyboard [output]");
+            console.log(
+              "  timeline - Generate timestamped storyboard [output]",
+            );
+            console.log(
+              "  gif      - Generate GIF preview [start_time] [output]",
+            );
+            console.log("  all      - Generate all thumbnails [output_dir]");
+          }
+        }
         break;
       }
 
