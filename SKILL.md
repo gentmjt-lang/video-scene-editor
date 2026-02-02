@@ -1,3 +1,8 @@
+---
+name: video-scene-editor
+description: Auto-detect scene changes in videos and edit them intelligently using FFmpeg. This skill can detect scene changes, split videos into clips, merge scenes with duration filtering, and perform full auto-edit workflows.
+---
+
 # Video Scene Editor
 
 Auto-detect scene changes in videos and edit them intelligently using FFmpeg.
@@ -9,18 +14,22 @@ This skill provides automatic video scene detection and intelligent editing capa
 ## Capabilities
 
 ### detectScenes
+
 Detect scene changes in a video file.
 
 **Parameters:**
+
 - `videoPath` (string): Path to the video file
 - `threshold` (number): Scene detection threshold 0.1-0.5 (default: 0.3)
 
 **Returns:** Array of scene change timestamps in seconds
 
 ### splitByScenes
+
 Split video into separate clips based on detected scenes.
 
 **Parameters:**
+
 - `videoPath` (string): Path to the video file
 - `timestamps` (array): Array of scene change timestamps
 - `outputDir` (string): Output directory (default: "scenes")
@@ -28,9 +37,11 @@ Split video into separate clips based on detected scenes.
 **Returns:** Array of output file paths
 
 ### mergeScenes
+
 Merge video scenes with filtering for minimum duration.
 
 **Parameters:**
+
 - `videoPath` (string): Path to the video file
 - `timestamps` (array): Array of scene change timestamps
 - `minDuration` (number): Minimum scene duration to keep (default: 2.0)
@@ -39,9 +50,11 @@ Merge video scenes with filtering for minimum duration.
 **Returns:** Path to merged output file
 
 ### autoEdit
+
 Full auto-edit workflow: detect scenes, filter, and merge.
 
 **Parameters:**
+
 - `videoPath` (string): Path to the video file
 - `minDuration` (number): Minimum scene duration (default: 3.0)
 - `threshold` (number): Scene detection threshold (default: 0.3)
